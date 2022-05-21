@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>Cells.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">Minesweeperv3</a> &gt; <a href="index.source.html" class="el_package">default</a> &gt; <span class="el_source">Cells.java</span></div><h1>Cells.java</h1><pre class="source lang-java linenums">public class Cells{
+
+    // Attributes
+    int visibleNumber;
+    char character;
+    boolean isFlag;
+    boolean isMine;
+    boolean isVisible;
+    boolean isNumber;
+<span class="nc" id="L10">    int adjacentMines = 0;</span>
+
+<span class="nc" id="L12">    public Cells() {</span>
+
+
+<span class="nc" id="L15">        this.visibleNumber = 0;</span>
+        //this.character = '?';
+<span class="nc" id="L17">        this.isNumber = false;</span>
+<span class="nc" id="L18">        this.isFlag = false;</span>
+<span class="nc" id="L19">        this.isMine = false;</span>
+<span class="nc" id="L20">        this.isMine = false;</span>
+<span class="nc" id="L21">        this.isVisible = false;</span>
+<span class="nc" id="L22">        this.adjacentMines = 0;</span>
+<span class="nc" id="L23">    }</span>
+
+    // Methods
+    public String getDisplayCharacter(int numAdjacentMines) {
+
+<span class="nc bnc" id="L28" title="All 2 branches missed.">        if (!this.isVisible) {</span>
+<span class="nc" id="L29">            return &quot;[?]&quot;;</span>
+<span class="nc bnc" id="L30" title="All 4 branches missed.">        } else if (this.isVisible &amp;&amp; !this.isMine) {</span>
+<span class="nc bnc" id="L31" title="All 2 branches missed.">            if (numAdjacentMines == 0) {</span>
+<span class="nc" id="L32">                return (&quot; . &quot;);</span>
+            }else {
+<span class="nc" id="L34">                return (&quot; &quot; + numAdjacentMines + &quot; &quot;);</span>
+            }
+        }
+<span class="nc bnc" id="L37" title="All 2 branches missed.">        else if (this.isMine) {</span>
+<span class="nc" id="L38">            return &quot; * &quot;;</span>
+<span class="nc bnc" id="L39" title="All 2 branches missed.">        } else if (this.isFlag) {</span>
+<span class="nc" id="L40">            return &quot; ! &quot;;</span>
+        } else {
+<span class="nc" id="L42">            return &quot;   &quot;;</span>
+        }
+    }
+
+
+
+
+    // Getters &amp; Setters
+    public boolean isMine() {
+<span class="nc" id="L51">        return isMine;</span>
+    }
+
+    public void setMine(boolean isMine) {
+<span class="nc" id="L55">        this.isMine = isMine;</span>
+
+<span class="nc" id="L57">    }</span>
+    public boolean isVisible() {
+<span class="nc" id="L59">        return isVisible;</span>
+    }
+
+    public void setVisible(boolean visible) {
+<span class="nc" id="L63">        isVisible = visible;</span>
+<span class="nc" id="L64">    }</span>
+    
+    public int getAdjacentMines() {
+<span class="nc" id="L67">        return adjacentMines;</span>
+    }
+
+    public void setAdjacentMines(int adjacentMines) {
+<span class="nc" id="L71">        this.adjacentMines = adjacentMines;</span>
+<span class="nc" id="L72">    }</span>
+
+    public void addAdjacentMines() {
+<span class="nc" id="L75">       this.adjacentMines++;</span>
+
+<span class="nc" id="L77">    }</span>
+
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.8.202204050719</span></div></body></html>

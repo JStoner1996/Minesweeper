@@ -1,0 +1,301 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>Field.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">Minesweeperv3</a> &gt; <a href="index.source.html" class="el_package">default</a> &gt; <span class="el_source">Field.java</span></div><h1>Field.java</h1><pre class="source lang-java linenums">public class Field {
+
+    private final Cells[][] gameField;
+    int numRows;
+    int numColumns;
+    int numMines;
+    int numEmptyCells;
+    //int adjacentMines = 0;
+
+<span class="nc" id="L10">    public Field(int numRows, int numColumns) {</span>
+<span class="nc" id="L11">        this.numRows = numRows;</span>
+<span class="nc" id="L12">        this.numColumns = numColumns;</span>
+<span class="nc" id="L13">        this.numMines = (this.numRows * this.numColumns) / 5;</span>
+<span class="nc" id="L14">        this.numEmptyCells = (this.numRows * this.numColumns) - numMines;</span>
+<span class="nc" id="L15">        CellsGenerator generator = new CellsGenerator(numRows, numColumns);</span>
+<span class="nc" id="L16">        this.gameField = generator.buildField();</span>
+<span class="nc" id="L17">    }</span>
+
+
+    // Gets cell data
+    public Cells getCell(int row, int column) {
+<span class="nc" id="L22">        return gameField[row][column];</span>
+    }
+
+    // Shows the field to the screen.
+    public void displayField() {
+<span class="nc" id="L27">        printHeader();</span>
+        //setAdjacentMines();
+
+<span class="nc bnc" id="L30" title="All 2 branches missed.">        for (int row = 0; row &lt; numRows; row++) {</span>
+
+<span class="nc" id="L32">            String index = String.format(&quot;%1$2s&quot;, row + 1);</span>
+<span class="nc" id="L33">            System.out.print(index + &quot; |&quot;);</span>
+<span class="nc bnc" id="L34" title="All 2 branches missed.">            for (int column = 0; column &lt; numColumns; column++) {</span>
+
+<span class="nc" id="L36">                System.out.print(getCell(row, column).getDisplayCharacter(this.getCell(row, column).adjacentMines)); // Prints either '?', 'number ' or '*'</span>
+                //checkAdjacentMines(row, column);
+            }
+
+<span class="nc" id="L40">            System.out.println();</span>
+        }
+<span class="nc" id="L42">    }</span>
+
+    public void visibleField() {
+<span class="nc" id="L45">        printHeader();</span>
+
+<span class="nc bnc" id="L47" title="All 2 branches missed.">        for (int row = 0; row &lt; numRows; row++) {</span>
+<span class="nc" id="L48">            String index = String.format(&quot;%1$2s&quot;, row - 1);</span>
+<span class="nc" id="L49">            System.out.print(index + &quot; |&quot;);</span>
+<span class="nc bnc" id="L50" title="All 2 branches missed.">            for (int column = 0; column &lt; numColumns; column++) {</span>
+<span class="nc" id="L51">                getCell(row, column).setVisible(true);</span>
+<span class="nc" id="L52">                checkAdjacentMinesCascade(row, column);</span>
+<span class="nc" id="L53">                System.out.print(getCell(row, column).getDisplayCharacter(this.getCell(row, column).adjacentMines)); // Prints either '?', 'number ' or '*'</span>
+            }
+
+<span class="nc" id="L56">            System.out.println();</span>
+        }
+
+<span class="nc" id="L59">    }</span>
+
+    // Prints the top row (header)
+    private void printHeader() {
+<span class="nc" id="L63">        String headColumns = &quot;   |&quot;;</span>
+<span class="nc" id="L64">        String headerLine = &quot;---|&quot;;</span>
+
+<span class="nc bnc" id="L66" title="All 2 branches missed.">        for (int i = 0; i &lt; numColumns; i++) {</span>
+<span class="nc" id="L67">            String index = String.format(&quot;%1$2s&quot;, i + 1);</span>
+<span class="nc" id="L68">            headColumns = headColumns.concat(index + &quot; &quot;);</span>
+<span class="nc" id="L69">            headerLine = headerLine.concat(&quot;---&quot;);</span>
+        }
+<span class="nc" id="L71">        System.out.println(headColumns);</span>
+<span class="nc" id="L72">        System.out.println(headerLine);</span>
+<span class="nc" id="L73">    }</span>
+
+    //Checks how many mines around a given cell
+    public int checkAdjacentMinesCascade(int row, int column) {
+        // Checks each direction for a mine
+<span class="nc bnc" id="L78" title="All 4 branches missed.">        if (!getCell(row, column).isVisible &amp;&amp; !getCell(row, column).isMine) {</span>
+
+<span class="nc" id="L80">            getCell(row, column).setVisible(true);</span>
+
+            //System.out.println(&quot;NW is valid: &quot; + isValidCell(row - 1, column - 1) + (row -1) + &quot;,&quot; + (column-1));
+<span class="nc bnc" id="L83" title="All 2 branches missed.">            if (isValidCell(row - 1, column - 1)) {</span>
+<span class="nc bnc" id="L84" title="All 2 branches missed.">                if (getCell(row - 1, column - 1).isMine) { // NW</span>
+<span class="nc" id="L85">                    this.getCell(row, column).addAdjacentMines();</span>
+<span class="nc bnc" id="L86" title="All 2 branches missed.">                } else if (this.getCell(row - 1, column - 1).adjacentMines == 0) {</span>
+
+<span class="nc" id="L88">                    checkAdjacentMinesCascade(row - 1, column - 1);</span>
+<span class="nc" id="L89">                    getCell(row - 1, column - 1).setVisible(true);</span>
+                }
+            }
+
+
+            //System.out.println(&quot;N is valid: &quot; + isValidCell(row, column - 1));
+<span class="nc bnc" id="L95" title="All 2 branches missed.">            if (isValidCell(row, column - 1)) {</span>
+<span class="nc bnc" id="L96" title="All 2 branches missed.">                if (getCell(row, column - 1).isMine) { // N</span>
+<span class="nc" id="L97">                    this.getCell(row, column).addAdjacentMines();</span>
+<span class="nc bnc" id="L98" title="All 2 branches missed.">                } else if (this.getCell(row, column - 1).adjacentMines == 0) {</span>
+
+<span class="nc" id="L100">                    checkAdjacentMinesCascade(row, column - 1);</span>
+                   // getCell(row, column - 1).setVisible(true);
+                }
+            }
+
+
+            //System.out.println(&quot;NE is valid: &quot; + isValidCell(row + 1, column - 1));
+<span class="nc bnc" id="L107" title="All 2 branches missed.">            if (isValidCell(row + 1, column - 1)) {</span>
+<span class="nc bnc" id="L108" title="All 2 branches missed.">                if (getCell(row + 1, column - 1).isMine) { // NE</span>
+<span class="nc" id="L109">                    this.getCell(row, column).addAdjacentMines();</span>
+<span class="nc bnc" id="L110" title="All 2 branches missed.">                } else if (this.getCell(row + 1, column - 1).adjacentMines == 0) {</span>
+
+<span class="nc" id="L112">                    checkAdjacentMinesCascade(row + 1, column - 1);</span>
+                    //getCell(row + 1, column - 1).setVisible(true);
+                }
+            }
+
+            //System.out.println(&quot;E is valid: &quot; + isValidCell(row + 1, column));
+<span class="nc bnc" id="L118" title="All 2 branches missed.">            if (isValidCell(row + 1, column)) {</span>
+<span class="nc bnc" id="L119" title="All 2 branches missed.">                if (getCell(row + 1, column).isMine) { // E</span>
+<span class="nc" id="L120">                    this.getCell(row, column).addAdjacentMines();</span>
+<span class="nc bnc" id="L121" title="All 2 branches missed.">                } else if (this.getCell(row + 1, column).adjacentMines == 0) {</span>
+
+<span class="nc" id="L123">                    checkAdjacentMinesCascade(row + 1, column);</span>
+                    //getCell(row + 1, column).setVisible(true);
+
+                }
+            }
+
+            // System.out.println(&quot;SE is valid: &quot; + isValidCell(row + 1, column + 1));
+<span class="nc bnc" id="L130" title="All 2 branches missed.">            if (isValidCell(row + 1, column + 1)) {</span>
+<span class="nc bnc" id="L131" title="All 2 branches missed.">                if (getCell(row + 1, column + 1).isMine) { // SE</span>
+<span class="nc" id="L132">                    this.getCell(row, column).addAdjacentMines();</span>
+<span class="nc bnc" id="L133" title="All 2 branches missed.">                } else if (this.getCell(row + 1, column + 1).adjacentMines == 0) {</span>
+
+<span class="nc" id="L135">                    checkAdjacentMinesCascade(row + 1, column + 1);</span>
+                    //getCell(row + 1, column + 1).setVisible(true);
+                }
+            }
+
+            //System.out.println(&quot;S is valid: &quot; + isValidCell(row, column - 1));
+<span class="nc bnc" id="L141" title="All 2 branches missed.">            if (isValidCell(row, column + 1)) {</span>
+<span class="nc bnc" id="L142" title="All 2 branches missed.">                if (getCell(row, column + 1).isMine) { // S</span>
+<span class="nc" id="L143">                    this.getCell(row, column).addAdjacentMines();</span>
+<span class="nc bnc" id="L144" title="All 2 branches missed.">                } else if (this.getCell(row, column + 1).adjacentMines == 0) {</span>
+<span class="nc" id="L145">                    checkAdjacentMinesCascade(row, column + 1);</span>
+                    //getCell(row, column + 1).setVisible(true);
+
+                }
+            }
+
+            //System.out.println(&quot;SW is valid: &quot; + isValidCell(row - 1, column + 1));
+<span class="nc bnc" id="L152" title="All 2 branches missed.">            if (isValidCell(row - 1, column + 1)) {</span>
+<span class="nc bnc" id="L153" title="All 2 branches missed.">                if (getCell(row - 1, column + 1).isMine) { // SW</span>
+<span class="nc" id="L154">                    this.getCell(row, column).addAdjacentMines();</span>
+<span class="nc bnc" id="L155" title="All 2 branches missed.">                } else if (this.getCell(row - 1, column + 1).adjacentMines == 0) {</span>
+
+
+<span class="nc" id="L158">                    checkAdjacentMinesCascade(row - 1, column + 1);</span>
+                    //getCell(row - 1, column + 1).setVisible(true);
+                }
+            }
+
+            //System.out.println(&quot;W is valid: &quot; + isValidCell(row - 1, column));
+<span class="nc bnc" id="L164" title="All 2 branches missed.">            if (isValidCell(row - 1, column)) {</span>
+<span class="nc bnc" id="L165" title="All 2 branches missed.">                if (getCell(row - 1, column).isMine) { // W</span>
+<span class="nc" id="L166">                     this.getCell(row, column).adjacentMines++;</span>
+<span class="nc bnc" id="L167" title="All 2 branches missed.">                } else if (this.getCell(row - 1, column).adjacentMines == 0) {</span>
+
+
+<span class="nc" id="L170">                    checkAdjacentMinesCascade(row - 1, column);</span>
+                    //getCell(row - 1, column).setVisible(true);
+                }
+            }
+        }
+<span class="nc" id="L175">        return getCell(row, column).adjacentMines;</span>
+    }
+    public int checkAdjacentMines(int row, int column) {
+        // Checks each direction for a mine
+<span class="nc bnc" id="L179" title="All 4 branches missed.">        if (!getCell(row, column).isVisible &amp;&amp; !getCell(row, column).isMine) {</span>
+
+<span class="nc" id="L181">            getCell(row, column).setVisible(true);</span>
+
+            //System.out.println(&quot;NW is valid: &quot; + isValidCell(row - 1, column - 1) + (row -1) + &quot;,&quot; + (column-1));
+<span class="nc bnc" id="L184" title="All 2 branches missed.">            if (isValidCell(row - 1, column - 1)) {</span>
+<span class="nc bnc" id="L185" title="All 2 branches missed.">                if (getCell(row - 1, column - 1).isMine) { // NW</span>
+<span class="nc" id="L186">                    this.getCell(row, column).addAdjacentMines();</span>
+<span class="nc bnc" id="L187" title="All 2 branches missed.">                } else if (this.getCell(row - 1, column - 1).adjacentMines == 0) {</span>
+
+                    //checkAdjacentMines(row - 1, column - 1);
+                    //getCell(row - 1, column - 1).setVisible(true);
+                }
+            }
+
+
+            //System.out.println(&quot;N is valid: &quot; + isValidCell(row, column - 1));
+<span class="nc bnc" id="L196" title="All 2 branches missed.">            if (isValidCell(row, column - 1)) {</span>
+<span class="nc bnc" id="L197" title="All 2 branches missed.">                if (getCell(row, column - 1).isMine) { // N</span>
+<span class="nc" id="L198">                    this.getCell(row, column).addAdjacentMines();</span>
+<span class="nc bnc" id="L199" title="All 2 branches missed.">                } else if (this.getCell(row, column - 1).adjacentMines == 0) {</span>
+
+                   // checkAdjacentMines(row, column - 1);
+                    //getCell(row, column - 1).setVisible(true);
+                }
+            }
+
+
+            //System.out.println(&quot;NE is valid: &quot; + isValidCell(row + 1, column - 1));
+<span class="nc bnc" id="L208" title="All 2 branches missed.">            if (isValidCell(row + 1, column - 1)) {</span>
+<span class="nc bnc" id="L209" title="All 2 branches missed.">                if (getCell(row + 1, column - 1).isMine) { // NE</span>
+<span class="nc" id="L210">                    this.getCell(row, column).addAdjacentMines();</span>
+<span class="nc bnc" id="L211" title="All 2 branches missed.">                } else if (this.getCell(row + 1, column - 1).adjacentMines == 0) {</span>
+
+                    //checkAdjacentMines(row + 1, column - 1);
+                    //getCell(row + 1, column - 1).setVisible(true);
+                }
+            }
+
+            //System.out.println(&quot;E is valid: &quot; + isValidCell(row + 1, column));
+<span class="nc bnc" id="L219" title="All 2 branches missed.">            if (isValidCell(row + 1, column)) {</span>
+<span class="nc bnc" id="L220" title="All 2 branches missed.">                if (getCell(row + 1, column).isMine) { // E</span>
+<span class="nc" id="L221">                    this.getCell(row, column).addAdjacentMines();</span>
+<span class="nc bnc" id="L222" title="All 2 branches missed.">                } else if (this.getCell(row + 1, column).adjacentMines == 0) {</span>
+
+                    //checkAdjacentMines(row + 1, column);
+                    //getCell(row + 1, column).setVisible(true);
+
+                }
+            }
+
+            // System.out.println(&quot;SE is valid: &quot; + isValidCell(row + 1, column + 1));
+<span class="nc bnc" id="L231" title="All 2 branches missed.">            if (isValidCell(row + 1, column + 1)) {</span>
+<span class="nc bnc" id="L232" title="All 2 branches missed.">                if (getCell(row + 1, column + 1).isMine) { // SE</span>
+<span class="nc" id="L233">                    this.getCell(row, column).addAdjacentMines();</span>
+<span class="nc bnc" id="L234" title="All 2 branches missed.">                } else if (this.getCell(row + 1, column + 1).adjacentMines == 0) {</span>
+
+                    //checkAdjacentMines(row + 1, column + 1);
+                    //getCell(row + 1, column + 1).setVisible(true);
+                }
+            }
+
+            //System.out.println(&quot;S is valid: &quot; + isValidCell(row, column - 1));
+<span class="nc bnc" id="L242" title="All 2 branches missed.">            if (isValidCell(row, column + 1)) {</span>
+<span class="nc bnc" id="L243" title="All 2 branches missed.">                if (getCell(row, column + 1).isMine) { // S</span>
+<span class="nc" id="L244">                    this.getCell(row, column).addAdjacentMines();</span>
+<span class="nc bnc" id="L245" title="All 2 branches missed.">                } else if (this.getCell(row, column + 1).adjacentMines == 0) {</span>
+                    //checkAdjacentMines(row, column + 1);
+                   // getCell(row, column + 1).setVisible(true);
+
+                }
+            }
+
+            //System.out.println(&quot;SW is valid: &quot; + isValidCell(row - 1, column + 1));
+<span class="nc bnc" id="L253" title="All 2 branches missed.">            if (isValidCell(row - 1, column + 1)) {</span>
+<span class="nc bnc" id="L254" title="All 2 branches missed.">                if (getCell(row - 1, column + 1).isMine) { // SW</span>
+<span class="nc" id="L255">                    this.getCell(row, column).addAdjacentMines();</span>
+<span class="nc bnc" id="L256" title="All 2 branches missed.">                } else if (this.getCell(row - 1, column + 1).adjacentMines == 0) {</span>
+
+
+                    //checkAdjacentMines(row - 1, column + 1);
+                    //getCell(row - 1, column + 1).setVisible(true);
+                }
+            }
+
+            //System.out.println(&quot;W is valid: &quot; + isValidCell(row - 1, column));
+<span class="nc bnc" id="L265" title="All 2 branches missed.">            if (isValidCell(row - 1, column)) {</span>
+<span class="nc bnc" id="L266" title="All 2 branches missed.">                if (getCell(row - 1, column).isMine) { // W</span>
+<span class="nc" id="L267">                    this.getCell(row, column).adjacentMines++;</span>
+<span class="nc bnc" id="L268" title="All 2 branches missed.">                } else if (this.getCell(row - 1, column).adjacentMines == 0) {</span>
+
+
+                    //checkAdjacentMines(row - 1, column);
+                    //getCell(row - 1, column).setVisible(true);
+                }
+            }
+        }
+<span class="nc" id="L276">        return getCell(row, column).adjacentMines;</span>
+    }
+
+
+
+
+    public boolean isValidCell(int row, int column) {
+        // Take 1 from row and column to get correct values
+
+        try {
+<span class="nc bnc" id="L286" title="All 2 branches missed.">            if (getCell(row, column) != null) {</span>
+<span class="nc" id="L287">                return true;</span>
+            } else {
+<span class="nc" id="L289">                return false;</span>
+            }
+<span class="nc" id="L291">        } catch (Exception e) {</span>
+
+            //System.out.println(&quot;Invalid Cell at &quot; + row + &quot;,&quot; + column);
+
+<span class="nc" id="L295">            return false;</span>
+        }
+
+    }
+}
+
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.8.202204050719</span></div></body></html>

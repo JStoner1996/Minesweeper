@@ -1,0 +1,143 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>Main.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">Minesweeperv3</a> &gt; <a href="index.source.html" class="el_package">default</a> &gt; <span class="el_source">Main.java</span></div><h1>Main.java</h1><pre class="source lang-java linenums">import java.util.Scanner;
+
+<span class="nc" id="L3">public class Main {</span>
+
+    static boolean gameWon;
+    static int numGuesses;
+<span class="nc" id="L7">    static int minRows = 4;</span>
+<span class="nc" id="L8">    static int minColumns = 4;</span>
+<span class="nc" id="L9">    static int maxRows = 36;</span>
+<span class="nc" id="L10">    static int maxColumns = 36;</span>
+
+    public static void main(String[] args) {
+
+<span class="nc" id="L14">        startGame();</span>
+
+<span class="nc" id="L16">    }</span>
+
+    public static void startGame() {
+<span class="nc" id="L19">        System.out.println(&quot;!--------------Welcome To Minesweeper--------------!&quot;);</span>
+
+<span class="nc" id="L21">        gameWon = false;</span>
+<span class="nc" id="L22">        numGuesses = 0;</span>
+
+        int numRows;
+        int numColumns;
+
+        do {
+<span class="nc" id="L28">            System.out.println(&quot;How many rows? Min 4, Max 36&quot;);</span>
+<span class="nc" id="L29">            numRows = getInput();</span>
+<span class="nc bnc" id="L30" title="All 4 branches missed.">            if (numRows &lt; minRows || numRows &gt; maxRows) {</span>
+<span class="nc" id="L31">                System.out.println(&quot;Needs to be between &quot; + minRows +  &quot; and &quot; + maxRows + &quot; rows.&quot;);</span>
+            }
+<span class="nc bnc" id="L33" title="All 4 branches missed.">        } while (numRows &lt; minRows || numRows &gt; maxRows);</span>
+
+        do {
+<span class="nc" id="L36">            System.out.println(&quot;How many columns? Min 4, Max 36&quot;);</span>
+<span class="nc" id="L37">            numColumns = getInput();</span>
+<span class="nc bnc" id="L38" title="All 4 branches missed.">            if (numColumns &lt; minColumns || numColumns &gt; maxColumns) {</span>
+<span class="nc" id="L39">                System.out.println(&quot;Needs to be between &quot; + minRows +  &quot; and &quot; + maxRows + &quot; rows.&quot;);</span>
+            }
+<span class="nc bnc" id="L41" title="All 4 branches missed.">        } while (numColumns &lt; minColumns || numColumns &gt; maxColumns);</span>
+
+<span class="nc" id="L43">        Field newField = new Field(numRows, numColumns);</span>
+
+<span class="nc" id="L45">        System.out.println(&quot;\nOn a &quot; + numRows + &quot; by &quot; + numColumns + &quot; grid, there will be &quot; + (newField.numEmptyCells) + &quot; empty cells, and &quot; +</span>
+                newField.numMines + &quot; mines!&quot;);
+
+<span class="nc" id="L48">        gameLoop(newField);</span>
+<span class="nc" id="L49">    }</span>
+
+    public static void gameLoop(Field newField) {
+
+        int chosenX;
+        int chosenY;
+
+
+<span class="nc bnc" id="L57" title="All 2 branches missed.">            while (!gameWon) {</span>
+<span class="nc" id="L58">                newField.displayField();</span>
+                do {
+<span class="nc" id="L60">                    System.out.println(&quot;\nPlease choose Row Number: &quot;);</span>
+<span class="nc" id="L61">                    chosenX = getInput();</span>
+<span class="nc bnc" id="L62" title="All 4 branches missed.">                    if (chosenX &gt; newField.numRows || chosenX &lt;1) {</span>
+<span class="nc" id="L63">                        System.out.println(&quot;\nRow + &quot; + chosenX +&quot; not on board, try again.&quot;);</span>
+
+                    }
+
+<span class="nc bnc" id="L67" title="All 4 branches missed.">                } while (chosenX &gt; newField.numRows || chosenX &lt;1);</span>
+
+                do {
+<span class="nc" id="L70">                    System.out.println(&quot;\nPlease choose Column Number: &quot;);</span>
+<span class="nc" id="L71">                    chosenY = getInput();</span>
+<span class="nc bnc" id="L72" title="All 4 branches missed.">                    if (chosenY &gt; newField.numColumns || chosenY &lt;1 ) {</span>
+<span class="nc" id="L73">                        System.out.println((&quot;\nColumn &quot; + chosenY + &quot; not on board, try again.&quot;));</span>
+                    }
+<span class="nc bnc" id="L75" title="All 4 branches missed.">                } while (chosenY &gt; newField.numColumns || chosenY &lt;1 );</span>
+
+
+                // Decrement chosen X and Y to get correct cell
+<span class="nc bnc" id="L79" title="All 2 branches missed.">                if (newField.getCell(chosenX - 1, chosenY - 1).isVisible()) {</span>
+
+<span class="nc" id="L81">                    System.out.println(&quot;You selected Row: &quot; + chosenX + &quot; and Column: &quot; + chosenY + &quot; again.\nA Cell can only be selected once, choose another.\nYou have had &quot; + numGuesses + &quot; guesses!&quot;);</span>
+
+                }else {
+<span class="nc bnc" id="L84" title="All 2 branches missed.">                    if (newField.getCell(chosenX - 1, chosenY - 1).isMine()) {</span>
+<span class="nc" id="L85">                        numGuesses++;</span>
+                        //newField.numMines--;
+<span class="nc" id="L87">                        System.out.println(&quot;You selected Row: &quot; + chosenX + &quot; and Column: &quot; + chosenY + &quot;.\nThis is a mine!&quot;);</span>
+<span class="nc" id="L88">                        newField.getCell(chosenX - 1, chosenY - 1).setVisible(true);</span>
+<span class="nc" id="L89">                        newField.visibleField();</span>
+<span class="nc" id="L90">                        loseGame();</span>
+
+                    } else {
+<span class="nc" id="L93">                        numGuesses++;</span>
+<span class="nc" id="L94">                        newField.numEmptyCells--;</span>
+<span class="nc bnc" id="L95" title="All 2 branches missed.">                        if (newField.numEmptyCells &gt; 0) {</span>
+<span class="nc" id="L96">                            System.out.println(&quot;You selected Row: &quot; + chosenX + &quot; and Column: &quot; + chosenY + &quot;.\nThis is NOT a mine! You have had &quot; + numGuesses + &quot; guesses. &quot; + newField.numEmptyCells + &quot; empty cells remain.&quot;);</span>
+
+<span class="nc" id="L98">                            System.out.println(&quot;There are &quot; + newField.checkAdjacentMines(chosenX - 1, chosenY - 1)  + &quot; mines around your chosen cell!&quot;);</span>
+                        } else {
+<span class="nc" id="L100">                            newField.visibleField();</span>
+<span class="nc" id="L101">                            winGame();</span>
+                        }
+
+                }
+            }
+        }
+<span class="nc" id="L107">    }</span>
+
+    private static void winGame() {
+<span class="nc" id="L110">        gameWon = true;</span>
+
+<span class="nc" id="L112">        System.out.println(&quot;Congrats, you cleared the field with &quot; + numGuesses + &quot; guesses! Do you want to play again? 1 = yes, 0 = no&quot;);</span>
+
+<span class="nc bnc" id="L114" title="All 2 branches missed.">        if (getInput() == 1) {</span>
+<span class="nc" id="L115">            startGame();</span>
+        } else {
+<span class="nc" id="L117">            System.exit(0);</span>
+        }
+<span class="nc" id="L119">    }</span>
+
+    public static void loseGame() {
+<span class="nc" id="L122">        System.out.println(&quot;Oh no, You lost with &quot; + numGuesses + &quot; guesses. Do you want to play again? 0 = No, 1 = Yes&quot;);</span>
+
+<span class="nc bnc" id="L124" title="All 2 branches missed.">        if (getInput() == 1) {</span>
+<span class="nc" id="L125">            startGame();</span>
+        } else {
+<span class="nc" id="L127">            System.exit(0);</span>
+        }
+<span class="nc" id="L129">    }</span>
+
+    public static int getInput() {
+<span class="nc" id="L132">        Scanner input = new Scanner(System.in);  // Create a Scanner object</span>
+<span class="nc bnc" id="L133" title="All 2 branches missed.">        if (input.hasNextInt()) {</span>
+<span class="nc" id="L134">            return input.nextInt();</span>
+        } else {
+<span class="nc" id="L136">            return 0;</span>
+        }
+    }
+}
+
+
+
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.8.202204050719</span></div></body></html>

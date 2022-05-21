@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>CellsGenerator.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">Minesweeperv3</a> &gt; <a href="index.source.html" class="el_package">default</a> &gt; <span class="el_source">CellsGenerator.java</span></div><h1>CellsGenerator.java</h1><pre class="source lang-java linenums">import java.util.Random;
+
+public class CellsGenerator {
+
+    // Attributes
+    int numRows;
+    int numColumns;
+    int numMines;
+
+
+<span class="nc" id="L11">    Random rand = new Random();</span>
+    // Constructor
+<span class="nc" id="L13">    public CellsGenerator(int numRows, int numColumns) {</span>
+
+<span class="nc" id="L15">        this.numRows = numRows;</span>
+<span class="nc" id="L16">        this.numColumns = numColumns;</span>
+<span class="nc" id="L17">        this.numMines = (this.numRows * this.numColumns) / 5;</span>
+<span class="nc" id="L18">    }</span>
+
+    // Methods
+
+    // 2D Array to store X and Y pos
+    public Cells[][] buildField() {
+<span class="nc" id="L24">        Cells[][] field = new Cells[this.numRows][this.numColumns];</span>
+<span class="nc" id="L25">        addCells(field);</span>
+<span class="nc" id="L26">        addMine(field);</span>
+<span class="nc" id="L27">        return field;</span>
+    }
+
+    // Add empty cells to the field
+    public void addCells(Cells[][] field) {
+<span class="nc bnc" id="L32" title="All 2 branches missed.">        for (int row = 0; row &lt; this.numRows; row++) {</span>
+<span class="nc bnc" id="L33" title="All 2 branches missed.">            for (int column = 0; column &lt; this.numColumns; column++) {</span>
+<span class="nc" id="L34">                field[row][column] = new Cells();</span>
+
+
+            }
+        }
+<span class="nc" id="L39">    }</span>
+
+    public void addMine(Cells[][] field) {
+<span class="nc" id="L42">        int mines = 0;</span>
+<span class="nc bnc" id="L43" title="All 2 branches missed.">        for (int row = 0; row &lt; this.numRows; row++) {</span>
+<span class="nc bnc" id="L44" title="All 2 branches missed.">            for (int column = 0; column &lt; this.numColumns; column++) {</span>
+<span class="nc bnc" id="L45" title="All 2 branches missed.">                if (mines &lt; numMines) {</span>
+<span class="nc" id="L46">                    field[row][column].setMine(true);</span>
+
+                    //adjacentMines(field, row, column);
+
+<span class="nc" id="L50">                    mines++;</span>
+
+                }
+            }
+        }
+<span class="nc" id="L55">        randomizeField(field);</span>
+<span class="nc" id="L56">    }</span>
+
+//    private void adjacentMines(Cells[][] field, int row, int column) {
+//
+//
+//        if (isValidCell(field, row - 1, column - 1) &amp;&amp; field[row - 1][column - 1].isMine()) {
+//            field[row][column].addAdjacentMines(); // NW
+//
+//        }
+//
+//        if (isValidCell(field, row, column - 1) &amp;&amp; field[row][column -1].isMine()){
+//            field[row][column].addAdjacentMines(); // N
+//        }
+//        if (isValidCell(field, row + 1, column - 1) &amp;&amp; field[row +1][column -1].isMine()  ){
+//            field[row][column].addAdjacentMines(); // NE
+//        }
+//        if (isValidCell(field, row + 1 , column) &amp;&amp; field[row +1][column].isMine()){
+//            field[row][column].addAdjacentMines(); // E
+//        }
+//        if (isValidCell(field, row + 1, column + 1) &amp;&amp; field[row +1][column +1].isMine() ){
+//            field[row][column].addAdjacentMines(); // SE
+//        }
+//        if (isValidCell(field, row, column + 1) &amp;&amp; field[row][column +1].isMine()){
+//            field[row][column].addAdjacentMines(); // S
+//        }
+//        if (isValidCell(field, row - 1, column + 1) &amp;&amp; field[row -1][column +1].isMine()){
+//            field[row][column].addAdjacentMines(); //SW
+//        }
+//        if (isValidCell(field, row - 1 , column) &amp;&amp; field[row -1][column].isMine()){
+//            field[row][column].addAdjacentMines(); // W
+//        }
+//    }
+//
+//     public boolean isValidCell(Cells field[][], int row, int column) {
+//         // Take 1 from row and column to get correct values
+//
+//         try {
+//             if (field[row][column] != null) {
+//                 return true;
+//             }
+//         } catch (Exception e) {
+//
+//            // System.out.println(&quot;Invalid Cell at &quot; + row + &quot;,&quot; + column);
+//
+//             return false;
+//         }
+//
+//         return false;
+//     }
+    public void randomizeField(final Cells[][] field) {
+
+
+<span class="nc bnc" id="L108" title="All 2 branches missed.">        for (int row = field.length - 1; row &gt; 0; row--) {</span>
+<span class="nc bnc" id="L109" title="All 2 branches missed.">            for (int column = field[row].length - 1; column &gt; 0; column--) {</span>
+<span class="nc" id="L110">                int randomRow = rand.nextInt(row + 1);</span>
+<span class="nc" id="L111">                int randomColumn = rand.nextInt(column + 1);</span>
+
+<span class="nc" id="L113">                Cells tempField = field[row][column];</span>
+<span class="nc" id="L114">                field[row][column] = field[randomRow][randomColumn];</span>
+<span class="nc" id="L115">                field[randomRow][randomColumn] = tempField;</span>
+
+            }
+        }
+
+
+<span class="nc" id="L121">    }</span>
+
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.8.202204050719</span></div></body></html>
